@@ -34,7 +34,7 @@ class IndexView(View):
         
 
             list_data=[]
-            sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id='03a512ca71f74669a24764115e63c074',client_secret='a6d09a0987c74e5fa9380d34a106fbe7'))
+            sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id='クライアントキー',client_secret='シークレットキー'))
             results = sp.search(q=keyword,limit=25)
             for result in results['tracks']['items']:
                 title = result['name']
@@ -78,7 +78,7 @@ class DetailView(View):
     def get(self,request,*args,**kwargs):
         id = self.kwargs['id']
         print(id)
-        sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id=' 03a512ca71f74669a24764115e63c074',client_secret='a6d09a0987c74e5fa9380d34a106fbe7'))
+        sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id='クライアントID',client_secret='シークレットキー'))
         
         detail_data = []
         
