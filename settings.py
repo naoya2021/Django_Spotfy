@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+from decouple import config
+from dj_database_url import parse as aburl
 from telnetlib import LOGOUT
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -32,7 +34,8 @@ SECRET_KEY = '=3(nir-zo&#!vvy57t=mr1g&goq!zch&f7)!93$=42$$f^v8q-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ["musicsearch.herokuapp.com"]
 
 
 # Application definition
@@ -86,12 +89,21 @@ WSGI_APPLICATION = 'musicsearch.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
+default_aburl = 'sqlite;///' + str(BASE_DIR / 'db.sqlite3')
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': config('DATABASE_URL',default=default_aburl, cast = aburl),
 }
+
+# import dj_database_url
+# db_from_env = dj_database_url.config()
+# DATABASES['default'].update(db_from_env)
 
 
 # Password validation
@@ -132,6 +144,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = str(BASE_DIR / 'staticfiles')
 # STATICFILES_DIRS = [STATIC_DIR,]
 
 #MEDIA_DIR
