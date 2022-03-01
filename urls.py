@@ -1,25 +1,24 @@
-"""musicsearch URL Configuration
 
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
-from django.contrib import admin
+from unicodedata import name
 from django.urls import path,include
+from django.urls.resolvers import URLPattern
+from app import views
+from django.contrib.auth import views as auth_views
+# from django.contrib.auth.views import logout
+# from django.views.generic.base import TemplateView
+# from django.contrib.auth.decorators import login_required
+# from accounts import views as accounts_views
 
-# from django.views.generic import TemplateView
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('',include('app.urls')),
+app_name='app'
 
+urlpatterns=[
+    path('',views.IndexView.as_view(),name='index'),
+    # path('home/',views.IndexView.as_view(),name='index'),
+    path('detail/<str:id>',views.DetailView.as_view(),name='detail'),
+    path("login/", auth_views.LoginView.as_view(template_name="app/templates/login.html"), name="login"),
+    path("logout/", auth_views.LogoutView.as_view(template_name="app/templates/login.html"), name="logout"),
+    path('signup/', views.signup,name = 'signup'),
+    path('password_change/',auth_views.PasswordChangeView.as_view(),name='password_change'),
+    path('password_change/done/',auth_views.PasswordChangeDoneView.as_view(),name='passwprd_change_done'),
 ]

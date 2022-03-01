@@ -13,15 +13,25 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from decouple import config
 from dj_database_url import parse as aburl
+import dj_database_url
 from telnetlib import LOGOUT
+import django_heroku
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# テンプレート(HTML)
-TEMPLATE_DIR = os.path.join(BASE_DIR,"Template")
+# TEMPLATE_DIR = os.path.join(BASE_DIR,"Template")# テンプレート(HTML)
+# SETTINGS_PATH = os.path.normpath(os.path.dirname(__file__))
+# TEMPLATE_DIRS = (
+# os.path.join(SETTINGS_PATH, 'templates'),
+# )
+
 # static(CSS)
 STATIC_DIR = os.path.join(BASE_DIR,"static")
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR,'static'),
+]
 # 画像
 MEDIA_DIR = os.path.join(BASE_DIR, "media")
 
@@ -35,7 +45,7 @@ SECRET_KEY = '=3(nir-zo&#!vvy57t=mr1g&goq!zch&f7)!93$=42$$f^v8q-'
 DEBUG = True
 
 
-ALLOWED_HOSTS = ["musicsearch.herokuapp.com"]
+ALLOWED_HOSTS = ['＊']
 
 
 # Application definition
@@ -48,6 +58,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
+  
     'widget_tweaks',
     #  'django.contrib.sites',
     # 'allauth',
@@ -70,8 +81,8 @@ ROOT_URLCONF = 'musicsearch.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR + '/templates'],
-        'APP_DIRS': True,
+        'DIRS': [BASE_DIR,'templates'],
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -89,21 +100,21 @@ WSGI_APPLICATION = 'musicsearch.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
-default_aburl = 'sqlite;///' + str(BASE_DIR / 'db.sqlite3')
 DATABASES = {
-    'default': config('DATABASE_URL',default=default_aburl, cast = aburl),
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
 
-# import dj_database_url
-# db_from_env = dj_database_url.config()
-# DATABASES['default'].update(db_from_env)
+# default_aburl = 'sqlite;///' + str(BASE_DIR / "db.sqlite3")
+# DATABASES = {
+#     'default': config('DATABASE_URL',default=default_aburl, cast = aburl),
+# }
+
+
+db_from_env = dj_database_url.config()
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
@@ -144,7 +155,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = str(BASE_DIR / 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles'),
+
 # STATICFILES_DIRS = [STATIC_DIR,]
 
 #MEDIA_DIR
@@ -172,6 +184,7 @@ LOGOUT_URL = 'app:logout'
 # ACCOUNT_EMAIL_VERIFICATION = 'none'
 # ACCOUNT_EMAIL_REQUIRED = True   # ユーザ登録にメルアド必須にする
 
-
+import django_heroku
+django_heroku.settings(locals())
 
 
