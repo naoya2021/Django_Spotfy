@@ -27,7 +27,7 @@ class IndexView(View):
         form = SearchForm(request.POST or None)
    
         
-        return render(request,'index.html',{
+        return render(request,'app/templates/index.html',{
             'form':form
         })
 
@@ -74,7 +74,7 @@ class IndexView(View):
                 'keyword':keyword
             })
 
-        return render(request, 'index.html',{
+        return render(request, 'app/templates/index.html',{
             'form':form
         })
    
@@ -118,7 +118,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            render(request,'index.html')
+            render(request,'app/templates/index.html')
     else:
         form = UserCreationForm()
     return render(request, 'app/templates/signup.html', {'form': form})
